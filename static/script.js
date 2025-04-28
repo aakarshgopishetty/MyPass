@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('passwordInput');
+    const usernameInput = document.getElementById('usernameInput');
+    const serviceInput = document.getElementById('serviceInput');
     const checkBtn = document.getElementById('checkBtn');
+    const saveBtn = document.getElementById('saveBtn');
     const strengthFeedback = document.getElementById('strengthFeedback');
     const strengthLabel = document.getElementById('strengthLabel');
     const suggestions = document.getElementById('suggestions');
     const showPasswordBtn = document.getElementById("showPasswordBtn");
+    const saveStatus = document.getElementById("saveStatus");
 
     showPasswordBtn.addEventListener('click', function() {
         const isPassword = passwordInput.type === 'password';
@@ -14,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkBtn.addEventListener('click', function() {
         checkPasswordStrength();
+    });
+
+    saveBtn.addEventListener('click', function() {
+        savePassword();
     });
 
     function checkPasswordStrength() {
@@ -78,5 +86,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         strengthFeedback.style.display = 'block';
+    }
+
+    function savePassword() {
+        const service = serviceInput.value;
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        // Validate inputs
+        if (!service || !username || !password) {
+            showSaveStatus('error', 'Please fill in all fields');
+            return;
+        }
+
+        // Send data to server
+        fetch('/save-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                service: service,
+                username: username,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSaveStatus('success', 'Password saved successfully!');
+                // Optional: Clear the form
+                serviceInput.value = '';
+                usernameInput.value = '';
+                passwordInput.value = '';
+                strengthFeedback.style.display = 'none';
+            } else {
+                showSaveStatus('error', data.message || 'Failed to save password');
+            }
+        })
+        .catch(error => {
+            showSaveStatus('error', 'Error saving password: ' + error.message);
+        });
+    }
+
+    function showSaveStatus(type, message) {
+        saveStatus.textContent = message;
+        saveStatus.className = 'mt-3 alert ' + (type === 'success' ? 'alert-success' : 'alert-danger');
+        saveStatus.style.display = 'block';
+        
+        // Hide status after 5 seconds
+        setTimeout(() => {
+            saveStatus.style.display = 'none';
+        }, 5000);
     }
 });
