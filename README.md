@@ -32,5 +32,5 @@
 ### For Web App
 
 ```bash
-git clone https://github.com/aakarshgopishetty/mypass.git
+git clone https://github.com/aakarshgopishetty/MyPass.git
 cd mypass
