@@ -14,21 +14,33 @@
         <a href="" style="text-decoration: none;">
             <h1 id="logo">MYPASS</h1>
         </a>
+        <a href="/passwords" class="view-passwords-btn">View Passwords</a>
     </div>
     
-    <div id="checker" class="container">
-        <label id="password"><h2>Check your password here</h2></label>
-        <br>
+    <div id="form" class="container">
+        <div class="details">
+            <label for="serviceInput">Service</label>
+            <input id="serviceInput" type="text" class="form-control" placeholder="Eg:- Gmail">
+        
+            <label for="usernameInput">Username</label>
+            <input id="usernameInput" type="text" class="form-control" placeholder="Eg:- Username124 ">
+        </div>      
         <div class="password-container">
-            <input id="passwordInput" type="password" class="form-control" placeholder="Enter your password">
+            <label for="passwordInput">Password</label>
+            <input id="passwordInput" type="password" class="form-control" placeholder="Eg:- Password123">
             <a id="showPasswordBtn">🙈</a>
         </div>
-        <button id="checkBtn" class="btn btn-primary mt-2">Check</button>
+        <div class="button-group">
+            <button id="checkBtn" class="btn btn-primary">Check</button>
+            <button id="saveBtn" class="btn btn-success">Save Password</button>
+        </div>
         
         <div id="strengthFeedback" style="display:none;">
             <h4>Password Strength: <span id="strengthLabel"></span></h4>
             <p id="suggestions"></p>
         </div>
+        
+        <div id="saveStatus" style="display:none;" class="mt-3 alert"></div>
     </div>
 </body>
 </html>
